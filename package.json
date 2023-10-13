@@ -8,7 +8,13 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "prisma:init": "prisma migrate dev --name init",
+    "prisma:migrate": "prisma migrate dev --name",
+    "prisma:apply": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate",
+    "prisma:reset": "prisma migrate reset"
   },
   "dependencies": {
     "@prisma/client": "^5.1.1",
