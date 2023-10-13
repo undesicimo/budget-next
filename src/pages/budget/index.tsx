@@ -1,4 +1,5 @@
 import { StyledInput } from "@/components/styledinput";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export default function Budget() {
@@ -22,13 +23,14 @@ export default function Budget() {
               />
             </div>
             <div className="flex justify-center">
-              <button
+              <Button
                 id="submit-budget"
-                className="mt-3 rounded-md border border-gray-600 px-0.5 text-black"
+                variant={"ghost"}
+                className="mt-3 w-12 rounded-md border border-gray-600 px-0.5"
                 type="submit"
               >
                 決定
-              </button>
+              </Button>
             </div>
           </div>
         </form>
