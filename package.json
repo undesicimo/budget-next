@@ -15,7 +15,9 @@
     "prisma:studio": "prisma studio",
     "prisma:generate": "prisma generate",
     "prisma:reset": "prisma migrate reset",
-    "prisma:format": "prisma format"
+    "prisma:format": "prisma format",
+    "home-env": "./scripts/home_env.sh",
+    "local-db": "./scripts/local_env.sh"
   },
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
