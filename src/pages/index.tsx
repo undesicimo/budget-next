@@ -1,7 +1,24 @@
 import { Button } from "@/components/ui/button";
+import { api } from "@/utils/api";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+
+  const { mutate } = api.example.newSession.useMutation({
+    onSuccess: async (data) => {
+      await router.push(`/${data}`);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
+  const onMutateClick = () => {
+    mutate();
+  };
+
   return (
     <>
       <Head>
@@ -14,7 +31,9 @@ export default function Home() {
           <h1>Welcome</h1>
         </div>
         <div>
-          <Button className="w-30">Start a new session</Button>
+          <Button className="w-30" onClick={onMutateClick}>
+            Start a new session
+          </Button>
         </div>
       </main>
     </>
