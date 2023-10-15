@@ -2,19 +2,40 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
-model Example {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
 
-    @@index([name])
+model Session {
+  id String @id @unique @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  Budget    Budget?
+}
+
+model Budget {
+  Session   Session @relation(fields: [sessionId], references: [id])
+  sessionId String  @unique
+
+  id       String    @id @unique @default(cuid())
+  amount   Float
+  expenses Expense[]
+}
+
+model Expense {
+  budgetID String
+  budget   Budget @relation(fields: [budgetID], references: [id])
+
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  name      String
+  emoji     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
