@@ -1,5 +1,5 @@
 import { useState } from "react";
-import budget from "../budget";
+import budget from "../[budget]";
 import {
   Popover,
   PopoverContent,
