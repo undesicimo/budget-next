@@ -1,16 +1,23 @@
 import { z } from "zod";
-
+import { createId as createCUID } from "@paralleldrive/cuid2";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
 export const exampleRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.example.findMany();
+  newSession: publicProcedure.mutation(async ({ ctx }) => {
+    const newSession = await ctx.db.session.create({
+      data: {
+        id: createCUID(),
+      },
+    });
+    return newSession.id;
   }),
+  deleteSession: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.session.delete({
+        where: {
+          id: input,
+        },
+      });
+    }),
 });
