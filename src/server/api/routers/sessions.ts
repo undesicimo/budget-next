@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createId as createCUID } from "@paralleldrive/cuid2";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 
-export const exampleRouter = createTRPCRouter({
+export const sessions = createTRPCRouter({
   newSession: publicProcedure.mutation(async ({ ctx }) => {
     const newSession = await ctx.db.session.create({
       data: {
