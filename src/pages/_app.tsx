@@ -10,7 +10,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="light"
         enableSystem
         disableTransitionOnChange
       >
