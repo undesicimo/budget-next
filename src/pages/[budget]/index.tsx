@@ -1,24 +1,60 @@
-import { StyledInput } from "@/components/styledinput";
+import ErrorPage from "@/components/error";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
+import { api } from "@/utils/api";
+import { useRouter } from "next/router";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function Budget() {
-  const onSubmit = (value: int) => {};
+  const router = useRouter();
+
+  const { isError } = api.sessions.findSession.useQuery(
+    router.query.budget as string,
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  );
+
+  const { mutateAsync } = api.budget.newBuget.useMutation();
+
   const form = useForm({
     defaultValues: {
       amount: 0,
     },
   });
 
+  const onFormSubmit: SubmitHandler<{ amount: number }> = async ({
+    amount,
+  }) => {
+    if (amount <= 0) {
+      return;
+    }
+    //なぜかstringが渡ってくる..
+    try {
+      await mutateAsync({
+        amount: parseInt(amount as unknown as string),
+        sessionId: router.query.budget as string,
+      });
+
+      await router.push(`/${router.query.budget as string}/expense`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  if (isError) {
+    return <ErrorPage router={router} />;
+  }
+
   return (
     <main className="mx-16 mt-[142px] flex justify-center">
       <div className="flex flex-col items-center justify-center overflow-x-hidden">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit(onFormSubmit)}>
             <div className="flex flex-col items-center gap-5">
-              <h1 className="text-center text-xl text-black">予算設定してね</h1>
+              <h1 className="text-center text-xl">予算設定してね</h1>
               <div className="h-[35px] px-1">
                 <FormItem>
                   <FormField
