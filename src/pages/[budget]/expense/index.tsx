@@ -11,8 +11,18 @@ import {
 import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import ErrorPage from "@/components/error";
+import { Button } from "@/components/ui/button";
+import { Expense } from "@prisma/client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as zod from "zod";
 
-export default function Expense() {
+const schema = zod.object({
+  name: zod.string(),
+  emoji: zod.string(),
+  amount: zod.number(),
+});
+
+export default function ExpenseForm() {
   const router = useRouter();
   const { data, isError } = api.budget.getBudgetBySession.useQuery(
     router.query.budget as string,
@@ -21,13 +31,19 @@ export default function Expense() {
     },
   );
 
-  const form = useForm({
+  const form = useForm<Expense>({
+    resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       emoji: "",
-      amount: "",
+      amount: 0,
     },
   });
+
+  const onFormSubmit = (data: Expense) => {
+    //todo
+    console.log(data);
+  };
 
   if (isError) {
     return <ErrorPage router={router} />;
@@ -37,7 +53,10 @@ export default function Expense() {
     <main className="flex h-screen w-screen items-center justify-center">
       <div>
         <Form {...form}>
-          <form className="mx-auto w-[16.5625rem]">
+          <form
+            className="mx-auto w-[16.5625rem]"
+            onSubmit={form.handleSubmit(onFormSubmit)}
+          >
             <div className="flex flex-col items-center">
               <BudgetHeader budget={data?.amount} />
               <div className="my-8 flex w-full flex-col gap-8">
@@ -53,7 +72,7 @@ export default function Expense() {
                                 {form.getValues("emoji")}
                               </div>
                             ) : (
-                              <span className="text-xl">🌭</span>
+                              <span className="text-xl"></span>
                             )}
                           </PopoverTrigger>
 
@@ -76,7 +95,7 @@ export default function Expense() {
                     name="name"
                     render={({ field }) => (
                       <FormControl>
-                        <input
+                        <Input
                           {...field}
                           type="text"
                           placeholder="どういうの"
@@ -94,14 +113,36 @@ export default function Expense() {
                       <FormControl>
                         <Input
                           {...field}
-                          type="text"
+                          type="number"
                           placeholder="金額"
+                          onChange={(data) =>
+                            //everythings a string....
+                            field.onChange(parseInt(data.target.value))
+                          }
                           className="h-[2.812rem] w-full rounded-[0.56981rem] border-[0.608px] text-center focus:outline-none"
                         />
                       </FormControl>
                     )}
                   />
                 </div>
+              </div>
+              <div className="flex h-[2.3rem] flex-row gap-8">
+                <Button
+                  variant={"outline"}
+                  className="h-full w-[7.06563rem] rounded-[0.56981rem] border border-gray-600"
+                  type="submit"
+                >
+                  追加
+                </Button>
+                <Button
+                  variant={"outline"}
+                  id="reset-button"
+                  className="h-full w-[7.06563rem] rounded-[0.56981rem] border border-gray-600"
+                  type="reset"
+                  onClick={() => form.reset()}
+                >
+                  リセット
+                </Button>
               </div>
             </div>
           </form>
