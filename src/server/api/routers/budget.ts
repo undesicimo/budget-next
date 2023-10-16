@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createId as createCUID } from "@paralleldrive/cuid2";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { TRPCClientError } from "@trpc/client";
 
 export const budget = createTRPCRouter({
   newBuget: publicProcedure
@@ -19,5 +20,18 @@ export const budget = createTRPCRouter({
         },
       });
       return newBudget.id;
+    }),
+
+  getBudgetBySession: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const budget = await ctx.db.budget.findUnique({
+        where: { sessionId: input },
+      });
+      if (!budget) {
+        throw new TRPCClientError("Session not found");
+      }
+
+      return budget;
     }),
 });

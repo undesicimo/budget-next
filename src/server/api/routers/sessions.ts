@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createId as createCUID } from "@paralleldrive/cuid2";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
+import { TRPCClientError } from "@trpc/client";
 
 export const sessions = createTRPCRouter({
   newSession: publicProcedure.mutation(async ({ ctx }) => {
@@ -19,5 +20,20 @@ export const sessions = createTRPCRouter({
           id: input,
         },
       });
+    }),
+  findSession: publicProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const session = await ctx.db.session.findUnique({
+        where: {
+          id: input,
+        },
+      });
+
+      if (!session) {
+        throw new TRPCClientError("Session not found");
+      }
+
+      return session;
     }),
 });
