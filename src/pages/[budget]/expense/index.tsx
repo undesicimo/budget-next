@@ -12,15 +12,16 @@ import { api } from "@/utils/api";
 import { useRouter } from "next/router";
 import ErrorPage from "@/components/error";
 import { Button } from "@/components/ui/button";
-import { Expense } from "@prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as zod from "zod";
+import * as z from "zod";
 
-const schema = zod.object({
-  name: zod.string(),
-  emoji: zod.string(),
-  amount: zod.number(),
+const schema = z.object({
+  name: z.string(),
+  emoji: z.string(),
+  amount: z.string(),
 });
+
+type ExpenseFormSchema = z.infer<typeof schema>;
 
 export default function ExpenseForm() {
   const router = useRouter();
@@ -31,16 +32,16 @@ export default function ExpenseForm() {
     },
   );
 
-  const form = useForm<Expense>({
+  const form = useForm<ExpenseFormSchema>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: "",
       emoji: "",
-      amount: 0,
+      amount: "",
     },
   });
 
-  const onFormSubmit = (data: Expense) => {
+  const onFormSubmit = (data: ExpenseFormSchema) => {
     //todo
     console.log(data);
   };
