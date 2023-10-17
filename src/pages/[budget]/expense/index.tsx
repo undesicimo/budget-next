@@ -37,7 +37,7 @@ export default function ExpenseForm() {
                     render={({ field }) => (
                       <FormControl>
                         <Popover>
-                          <PopoverTrigger className="	h-[2.812rem] w-[4.6875rem] rounded-[0.56981rem] border-[0.608px]">
+                          <PopoverTrigger className="	dark:border-beige h-[2.812rem] w-[4.6875rem] rounded-[0.56981rem] border-[0.608px]">
                             {form.getValues("emoji") ? (
                               <div className="text-2xl">
                                 {form.getValues("emoji")}

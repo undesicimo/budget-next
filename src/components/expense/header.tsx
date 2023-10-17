@@ -8,7 +8,7 @@ export default function BudgetHeader({
     <div className="flex flex-col">
       <h1 className="self-center text-2xl">💰残高</h1>
       {budget > 0 ? (
-        <h2 className="text-4xl text-black">{"¥" + budget}</h2>
+        <h2 className="text-4xl">{"¥" + budget}</h2>
       ) : (
         <>
           <h2 className="self-center text-xl text-red-700">
