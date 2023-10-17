@@ -1,64 +1,20 @@
-import { useForm } from "react-hook-form";
-import EmojiPicker from "emoji-picker-react";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import ErrorPage from "@/components/error";
 import BudgetHeader from "@/components/expense/header";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { api } from "@/utils/api";
+import EmojiPicker from "emoji-picker-react";
 import { useRouter } from "next/router";
-import ErrorPage from "@/components/error";
-import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-
-const schema = z.object({
-  name: z.string(),
-  emoji: z.string(),
-  amount: z.number(),
-});
-
-type ExpenseFormSchema = z.infer<typeof schema>;
+import useExpenseForm from "./useExpense";
 
 export default function ExpenseForm() {
   const router = useRouter();
-  const { data, isError } = api.budget.getBudgetBySession.useQuery(
-    router.query.budget as string,
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
-
-  const form = useForm<ExpenseFormSchema>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      name: "",
-      emoji: "",
-      amount: 0,
-    },
-  });
-
-  const { mutateAsync } = api.expense.newExpense.useMutation();
-
-  const onFormSubmit = async (data: ExpenseFormSchema) => {
-    if (data.amount <= 0) {
-      return;
-    }
-    try {
-      await mutateAsync({
-        sessionID: router.query.budget as string,
-        amount: data.amount,
-        name: data.name,
-        emoji: data.emoji,
-      });
-      form.reset();
-    } catch (e) {
-      new Error("予算の設定に失敗しました");
-    }
-  };
+  const { data, form, isError, onFormSubmit } = useExpenseForm({ router });
 
   if (isError) {
     return <ErrorPage router={router} />;
