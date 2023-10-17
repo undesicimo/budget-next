@@ -21,14 +21,14 @@ export default function Budget() {
 
   const form = useForm({
     defaultValues: {
-      amount: 0,
+      amount: "",
     },
   });
 
-  const onFormSubmit: SubmitHandler<{ amount: number }> = async ({
+  const onFormSubmit: SubmitHandler<{ amount: string }> = async ({
     amount,
   }) => {
-    if (amount <= 0) {
+    if (amount <= "0") {
       return;
     }
     //なぜかstringが渡ってくる..
@@ -40,7 +40,7 @@ export default function Budget() {
 
       await router.push(`/${router.query.budget as string}/expense`);
     } catch (e) {
-      console.log(e);
+      new Error("予算の設定に失敗しました");
     }
   };
 
