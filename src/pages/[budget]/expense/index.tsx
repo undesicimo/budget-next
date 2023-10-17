@@ -18,7 +18,7 @@ import * as z from "zod";
 const schema = z.object({
   name: z.string(),
   emoji: z.string(),
-  amount: z.string(),
+  amount: z.number(),
 });
 
 type ExpenseFormSchema = z.infer<typeof schema>;
@@ -37,13 +37,27 @@ export default function ExpenseForm() {
     defaultValues: {
       name: "",
       emoji: "",
-      amount: "",
+      amount: 0,
     },
   });
 
-  const onFormSubmit = (data: ExpenseFormSchema) => {
-    //todo
-    console.log(data);
+  const { mutateAsync } = api.expense.newExpense.useMutation();
+
+  const onFormSubmit = async (data: ExpenseFormSchema) => {
+    if (data.amount <= 0) {
+      return;
+    }
+    try {
+      await mutateAsync({
+        sessionID: router.query.budget as string,
+        amount: data.amount,
+        name: data.name,
+        emoji: data.emoji,
+      });
+      form.reset();
+    } catch (e) {
+      new Error("予算の設定に失敗しました");
+    }
   };
 
   if (isError) {
