@@ -50,7 +50,7 @@ export default function ExpenseForm() {
                       <FormControl>
                         <Popover open={isPopoverOpen}>
                           <PopoverTrigger
-                            className="	dark:border-beige h-[2.812rem] w-[4.6875rem] rounded-[0.56981rem] border-[0.608px]"
+                            className="	dark:border-beige h-[2.812rem] w-[4.6875rem] rounded-[0.56981rem] border border-slate-900"
                             onClick={() => setPopoverOpen(true)}
                           >
                             {form.getValues("emoji") ? (
@@ -65,7 +65,8 @@ export default function ExpenseForm() {
                           </PopoverTrigger>
 
                           <PopoverContent
-                            side="left"
+                            side="top"
+                            sideOffset={4}
                             onPointerDownOutside={() => setPopoverOpen(false)}
                             className="flex h-min w-min items-center justify-center"
                           >
@@ -75,8 +76,8 @@ export default function ExpenseForm() {
                                 field.onChange(emoji.emoji);
                                 setPopoverOpen(false);
                               }}
-                              height={400}
-                              width={300}
+                              height={350}
+                              width={250}
                             />
                           </PopoverContent>
                         </Popover>
@@ -91,7 +92,7 @@ export default function ExpenseForm() {
                           {...field}
                           type="text"
                           placeholder="どういうの"
-                          className="h-[2.812rem] w-[11.25rem] rounded-[0.56981rem] border-[0.608px] text-center focus:outline-none"
+                          className="rounded-[0.56981rem h-[2.812rem] w-[11.25rem] text-center focus:outline-none"
                         />
                       </FormControl>
                     )}
@@ -111,7 +112,7 @@ export default function ExpenseForm() {
                             //everythings a string....
                             field.onChange(parseInt(data.target.value))
                           }
-                          className="h-[2.812rem] w-full rounded-[0.56981rem] border-[0.608px] text-center focus:outline-none"
+                          className="h-[2.812rem] w-full rounded-[0.56981rem] text-center focus:outline-none"
                         />
                       </FormControl>
                     )}

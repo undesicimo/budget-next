@@ -41,7 +41,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <nav>
-        <div className="flex h-12 w-screen flex-row items-center justify-end pr-1">
+        <div className="flex w-screen flex-row items-center justify-end pr-1 pt-3">
           <ModeToggle />
         </div>
       </nav>
