@@ -13,8 +13,8 @@ const schema = z.object({
 type ExpenseFormSchema = z.infer<typeof schema>;
 /**
  *
- * @param {NextRouter}
- * @returns {object} form, onFormSubmit, data, isError
+ * @param router
+ * @returns form, onFormSubmit, data, isError
  * routerを元にデータCRUD行う
  */
 export default function useExpenseForm({ router }: { router: NextRouter }) {
