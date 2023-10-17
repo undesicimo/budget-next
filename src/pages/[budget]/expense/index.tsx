@@ -8,7 +8,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { SuggestionMode } from "emoji-picker-react";
 import { useRouter } from "next/router";
 import useExpenseForm from "./useExpense";
 import { FaceIcon } from "@radix-ui/react-icons";
@@ -64,17 +64,20 @@ export default function ExpenseForm() {
                             )}
                           </PopoverTrigger>
 
-                          <PopoverContent>
-                            <div className="h-[300] w-[300px]">
-                              <EmojiPicker
-                                onEmojiClick={(emoji) => {
-                                  field.onChange(emoji.emoji);
-                                  setPopoverOpen(false);
-                                }}
-                                height={400}
-                                width={300}
-                              />
-                            </div>
+                          <PopoverContent
+                            side="left"
+                            onPointerDownOutside={() => setPopoverOpen(false)}
+                            className="flex h-min w-min items-center justify-center"
+                          >
+                            <EmojiPicker
+                              suggestedEmojisMode={SuggestionMode.FREQUENT}
+                              onEmojiClick={(emoji) => {
+                                field.onChange(emoji.emoji);
+                                setPopoverOpen(false);
+                              }}
+                              height={400}
+                              width={300}
+                            />
                           </PopoverContent>
                         </Popover>
                       </FormControl>
