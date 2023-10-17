@@ -13,9 +13,12 @@ import { useRouter } from "next/router";
 import useExpenseForm from "./useExpense";
 import { FaceIcon } from "@radix-ui/react-icons";
 import { api } from "@/utils/api";
+import { useState } from "react";
 
 export default function ExpenseForm() {
   const router = useRouter();
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
+
   const { data, isError: isSessionNotFound } =
     api.budget.getBudgetBySession.useQuery(router.query.budget as string, {
       refetchOnWindowFocus: false,
@@ -45,8 +48,11 @@ export default function ExpenseForm() {
                     name="emoji"
                     render={({ field }) => (
                       <FormControl>
-                        <Popover>
-                          <PopoverTrigger className="	dark:border-beige h-[2.812rem] w-[4.6875rem] rounded-[0.56981rem] border-[0.608px]">
+                        <Popover open={isPopoverOpen}>
+                          <PopoverTrigger
+                            className="	dark:border-beige h-[2.812rem] w-[4.6875rem] rounded-[0.56981rem] border-[0.608px]"
+                            onClick={() => setPopoverOpen(true)}
+                          >
                             {form.getValues("emoji") ? (
                               <div className="text-2xl">
                                 {form.getValues("emoji")}
@@ -61,9 +67,10 @@ export default function ExpenseForm() {
                           <PopoverContent>
                             <div className="h-[300] w-[300px]">
                               <EmojiPicker
-                                onEmojiClick={(emoji) =>
-                                  field.onChange(emoji.emoji)
-                                }
+                                onEmojiClick={(emoji) => {
+                                  field.onChange(emoji.emoji);
+                                  setPopoverOpen(false);
+                                }}
                                 height={400}
                                 width={300}
                               />
