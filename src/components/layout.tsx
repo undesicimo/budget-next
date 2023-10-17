@@ -41,7 +41,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <nav>
-        <div className="grid grid-flow-col justify-end">
+        <div className="flex h-12 w-screen flex-row items-center justify-end pr-1">
           <ModeToggle />
         </div>
       </nav>
