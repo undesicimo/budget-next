@@ -4,6 +4,7 @@ import { api } from "@/utils/api";
 
 import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/themeprovider";
+import Layout from "@/components/layout";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   return (
@@ -14,7 +15,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         enableSystem
         disableTransitionOnChange
       >
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </ThemeProvider>
     </>
   );
