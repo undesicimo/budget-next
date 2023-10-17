@@ -12,12 +12,20 @@ import EmojiPicker from "emoji-picker-react";
 import { useRouter } from "next/router";
 import useExpenseForm from "./useExpense";
 import { FaceIcon } from "@radix-ui/react-icons";
+import { api } from "@/utils/api";
 
 export default function ExpenseForm() {
   const router = useRouter();
-  const { data, form, isError, onFormSubmit } = useExpenseForm({ router });
+  const { data, isError: isSessionNotFound } =
+    api.budget.getBudgetBySession.useQuery(router.query.budget as string, {
+      refetchOnWindowFocus: false,
+    });
 
-  if (isError) {
+  const { form, onFormSubmit } = useExpenseForm({
+    router,
+  });
+
+  if (isSessionNotFound) {
     return <ErrorPage router={router} />;
   }
 

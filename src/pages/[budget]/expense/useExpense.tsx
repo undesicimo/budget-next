@@ -27,13 +27,6 @@ export default function useExpenseForm({ router }: { router: NextRouter }) {
     },
   });
 
-  const { data, isError } = api.budget.getBudgetBySession.useQuery(
-    router.query.budget as string,
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
-
   const { mutateAsync } = api.expense.newExpense.useMutation();
 
   const onFormSubmit = async (data: ExpenseFormSchema) => {
@@ -54,8 +47,6 @@ export default function useExpenseForm({ router }: { router: NextRouter }) {
   };
 
   return {
-    data,
-    isError,
     form,
     onFormSubmit,
   };
