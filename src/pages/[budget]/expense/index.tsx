@@ -11,6 +11,7 @@ import {
 import EmojiPicker from "emoji-picker-react";
 import { useRouter } from "next/router";
 import useExpenseForm from "./useExpense";
+import { FaceIcon } from "@radix-ui/react-icons";
 
 export default function ExpenseForm() {
   const router = useRouter();
@@ -43,7 +44,9 @@ export default function ExpenseForm() {
                                 {form.getValues("emoji")}
                               </div>
                             ) : (
-                              <span className="text-xl"></span>
+                              <div className="flex justify-center">
+                                <FaceIcon className="h-6 w-6" />
+                              </div>
                             )}
                           </PopoverTrigger>
 
