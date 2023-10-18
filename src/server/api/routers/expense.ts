@@ -29,6 +29,17 @@ export const expense = createTRPCRouter({
           budgetID: relatedBudget.id,
         },
       });
+
+      const remainingBudgetAmount = relatedBudget.amount - input.amount;
+      await ctx.db.budget.update({
+        where: {
+          id: relatedBudget.id,
+        },
+        data: {
+          amount: remainingBudgetAmount,
+        },
+      });
+
       return newExpense;
     }),
 

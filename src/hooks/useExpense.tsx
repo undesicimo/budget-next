@@ -59,7 +59,11 @@ export default function useExpenseForm({
       ]);
     },
     onSettled: async () => {
+      //どちも最新のデータを取得する
       await apiUtils.expense.getAllExpenseByBudgetID.invalidate({ budgetID });
+      await apiUtils.budget.getBudgetBySession.invalidate(
+        router.query.budget as string,
+      );
     },
   });
 
