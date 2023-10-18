@@ -27,10 +27,8 @@ export default function ExpenseForm() {
     });
 
   const { data: expenses } = api.expense.getAllExpenseByBudgetID.useQuery(
-    { budgetID: router.query.budget as string },
-    {
-      refetchOnWindowFocus: false,
-    },
+    { budgetID: budget?.id },
+    {},
   );
   const { form, onFormSubmit } = useExpenseForm({
     router,
