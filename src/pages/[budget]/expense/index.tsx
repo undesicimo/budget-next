@@ -14,18 +14,27 @@ import useExpenseForm from "../../../hooks/useExpense";
 import { FaceIcon } from "@radix-ui/react-icons";
 import { api } from "@/utils/api";
 import { useState } from "react";
+import ExpenseList from "@/components/list";
 
 export default function ExpenseForm() {
   const router = useRouter();
   const [isPopoverOpen, setPopoverOpen] = useState(false);
 
-  const { data, isError: isSessionNotFound } =
+  const { data: budget, isError: isSessionNotFound } =
     api.budget.getBudgetBySession.useQuery(router.query.budget as string, {
       refetchOnWindowFocus: false,
+      enabled: !!router.query.budget,
     });
 
+  const { data: expenses } = api.expense.getAllExpenseByBudgetID.useQuery(
+    { budgetID: router.query.budget as string },
+    {
+      refetchOnWindowFocus: false,
+    },
+  );
   const { form, onFormSubmit } = useExpenseForm({
     router,
+    budgetID: router.query.budget as string,
   });
 
   if (isSessionNotFound) {
@@ -33,15 +42,15 @@ export default function ExpenseForm() {
   }
 
   return (
-    <main className="flex h-screen w-screen items-center justify-center">
-      <div>
+    <main className="flex h-screen w-screen flex-col items-center justify-center gap-10">
+      <section>
         <Form {...form}>
           <form
             className="mx-auto w-[16.5625rem]"
             onSubmit={form.handleSubmit(onFormSubmit)}
           >
             <div className="flex flex-col items-center">
-              <BudgetHeader budget={data?.amount} />
+              <BudgetHeader budget={budget?.amount} />
               <div className="my-8 flex w-full flex-col gap-8">
                 <FormItem className="flex flex-row place-items-center justify-between">
                   <FormField
@@ -50,7 +59,7 @@ export default function ExpenseForm() {
                       <FormControl>
                         <Popover open={isPopoverOpen}>
                           <PopoverTrigger
-                            className="	dark:border-beige h-[2.812rem] w-[4.6875rem] rounded-[0.56981rem] border border-slate-900"
+                            className="	h-[2.812rem] w-[4.6875rem] rounded-[0.56981rem] border border-slate-900 dark:border-beige"
                             onClick={() => setPopoverOpen(true)}
                           >
                             {form.getValues("emoji") ? (
@@ -140,7 +149,8 @@ export default function ExpenseForm() {
             </div>
           </form>
         </Form>
-      </div>
+      </section>
+      <ExpenseList expenses={expenses} />
     </main>
   );
 }

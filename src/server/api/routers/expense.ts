@@ -31,4 +31,16 @@ export const expense = createTRPCRouter({
       });
       return newExpense;
     }),
+
+  getAllExpenseByBudgetID: publicProcedure
+    .input(z.object({ budgetID: z.string().optional() }))
+    .query(async ({ ctx, input }) => {
+      if (!input.budgetID) throw new TRPCClientError("please provide budgetID");
+      const expenses = await ctx.db.expense.findMany({
+        where: {
+          budgetID: input.budgetID,
+        },
+      });
+      return expenses;
+    }),
 });
