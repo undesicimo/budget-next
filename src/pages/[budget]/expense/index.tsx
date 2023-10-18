@@ -28,11 +28,13 @@ export default function ExpenseForm() {
 
   const { data: expenses } = api.expense.getAllExpenseByBudgetID.useQuery(
     { budgetID: budget?.id },
-    {},
+    {
+      refetchOnWindowFocus: false,
+    },
   );
   const { form, onFormSubmit } = useExpenseForm({
     router,
-    budgetID: router.query.budget as string,
+    budgetID: budget?.id,
   });
 
   if (isSessionNotFound) {

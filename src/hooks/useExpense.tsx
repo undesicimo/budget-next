@@ -1,17 +1,9 @@
 import { api } from "@/utils/api";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { TRPCClientError } from "@trpc/client";
 import { NextRouter } from "next/router";
 
 import { useForm } from "react-hook-form";
-import * as z from "zod";
 
-const schema = z.object({
-  name: z.string(),
-  emoji: z.string(),
-  amount: z.number(),
-});
-
-type ExpenseFormSchema = z.infer<typeof schema>;
 /**
  *
  * @param router
@@ -23,14 +15,13 @@ export default function useExpenseForm({
   budgetID,
 }: {
   router: NextRouter;
-  budgetID: string;
+  budgetID: string | undefined;
 }) {
-  const form = useForm<ExpenseFormSchema>({
-    resolver: zodResolver(schema),
+  const form = useForm({
     defaultValues: {
       name: "",
       emoji: "",
-      amount: 0,
+      amount: "",
     },
   });
 
@@ -38,10 +29,11 @@ export default function useExpenseForm({
 
   const expensesMutation = api.expense.newExpense.useMutation({
     onMutate: async (data) => {
-      // なんか動く。。
       //ref https://stackoverflow.com/questions/74671735/optimistic-updates-with-react-query-trpc
       //    https://github.com/TanStack/query/blob/v4/examples/react/optimistic-updates-typescript/src/pages/index.tsx
       await apiUtils.expense.getAllExpenseByBudgetID.cancel();
+      if (budgetID === undefined)
+        throw new TRPCClientError("budgetID is undefined");
 
       const previousExpenses = apiUtils.expense.getAllExpenseByBudgetID.getData(
         { budgetID },
@@ -61,16 +53,28 @@ export default function useExpenseForm({
       ]);
       return { previousExpenses };
     },
+    onError: (_err, _newData, context) => {
+      apiUtils.expense.getAllExpenseByBudgetID.setData({ budgetID }, [
+        ...(context?.previousExpenses ?? []),
+      ]);
+    },
+    onSettled: async () => {
+      await apiUtils.expense.getAllExpenseByBudgetID.invalidate({ budgetID });
+    },
   });
 
-  const onFormSubmit = async (data: ExpenseFormSchema) => {
-    if (data.amount <= 0) {
+  const onFormSubmit = async (data: {
+    name: string;
+    emoji: string;
+    amount: string;
+  }) => {
+    if (!data.amount) {
       return;
     }
     try {
       await expensesMutation.mutateAsync({
         sessionID: router.query.budget as string,
-        amount: data.amount,
+        amount: parseInt(data.amount),
         name: data.name,
         emoji: data.emoji,
       });
