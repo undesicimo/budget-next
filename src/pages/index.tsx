@@ -28,7 +28,7 @@ export default function Home() {
       <Head>
         <title>Budget</title>
         <meta name="description" content="budget" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/fab.ico" />
       </Head>
       <main className="flex h-screen w-screen flex-col items-center justify-center gap-10">
         <div className="sm:h-[456px] sm:w-[456px] lg:h-[391px] lg:w-[391px]">
