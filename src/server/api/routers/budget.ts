@@ -1,22 +1,24 @@
 import { z } from "zod";
-import { createId as createCUID } from "@paralleldrive/cuid2";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCClientError } from "@trpc/client";
 
 export const budget = createTRPCRouter({
-  newBuget: publicProcedure
+  updateBudget: publicProcedure
     .input(
       z.object({
         amount: z.number().nonnegative(),
         sessionId: z.string(),
       }),
     )
+    //todo 常にsessionIDあるのに発行してる
+    //初回だからいいか。
+    //２回目以降どうするか
+    //budgetのセットでsessionIDに紐づけるのはやめて、budgeIDの発行はsessionIDの発行と同時に行う
     .mutation(async ({ ctx, input }) => {
-      const newBudget = await ctx.db.budget.create({
+      const newBudget = await ctx.db.budget.update({
+        where: { sessionId: input.sessionId },
         data: {
-          id: createCUID(),
           amount: input.amount,
-          sessionId: input.sessionId,
         },
       });
       return newBudget.id;
@@ -33,5 +35,16 @@ export const budget = createTRPCRouter({
       }
 
       return budget;
+    }),
+
+  resetBudget: publicProcedure
+    .input(z.string())
+    .mutation(async ({ ctx, input }) => {
+      const resetBudget = await ctx.db.budget.update({
+        where: { sessionId: input },
+        data: { amount: 0, expenses: { deleteMany: {} } },
+      });
+
+      return resetBudget;
     }),
 });

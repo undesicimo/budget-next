@@ -10,6 +10,14 @@ export const sessions = createTRPCRouter({
         id: createCUID(),
       },
     });
+
+    await ctx.db.budget.create({
+      data: {
+        id: createCUID(),
+        amount: 0,
+        sessionId: newSession.id,
+      },
+    });
     return newSession.id;
   }),
   deleteSession: publicProcedure

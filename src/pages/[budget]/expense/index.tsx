@@ -26,6 +26,8 @@ export default function ExpenseForm() {
       enabled: !!router.query.budget,
     });
 
+  const { resetBudgetBySession } = useResetBudget();
+
   const { data: expenses } = api.expense.getAllExpenseByBudgetID.useQuery(
     { budgetID: budget?.id },
     {
@@ -36,6 +38,11 @@ export default function ExpenseForm() {
     router,
     budgetID: budget?.id,
   });
+
+  const onResetClick = () => {
+    resetBudgetBySession(router.query.budget as string);
+    router.back();
+  };
 
   if (isSessionNotFound) {
     return <ErrorPage router={router} />;
@@ -141,7 +148,7 @@ export default function ExpenseForm() {
                   id="reset-button"
                   className="h-full w-[7.06563rem] rounded-[0.56981rem] border border-gray-600"
                   type="reset"
-                  onClick={() => form.reset()}
+                  onClick={onResetClick}
                 >
                   リセット
                 </Button>
@@ -153,4 +160,12 @@ export default function ExpenseForm() {
       <ExpenseList expenses={expenses} />
     </main>
   );
+}
+function useResetBudget() {
+  const { mutate: resetBudgetBySession, ...budgetMutations } =
+    api.budget.resetBudget.useMutation();
+  return {
+    ...budgetMutations,
+    resetBudgetBySession,
+  };
 }

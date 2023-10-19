@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { api } from "@/utils/api";
+import { TRPCClientError } from "@trpc/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -11,7 +12,7 @@ export default function Home() {
       await router.push(`/${data}`);
     },
     onError: (error) => {
-      console.log(error);
+      new TRPCClientError(error.message);
     },
   });
 

@@ -17,7 +17,7 @@ export default function Budget() {
     },
   );
 
-  const { mutateAsync } = api.budget.newBuget.useMutation();
+  const { mutateAsync } = api.budget.updateBudget.useMutation();
 
   const form = useForm({
     defaultValues: {
