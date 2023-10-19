@@ -2,12 +2,7 @@ import { api } from "@/utils/api";
 import { TRPCClientError } from "@trpc/client";
 import { NextRouter } from "next/router";
 
-import { useForm } from "react-hook-form";
-
 /**
- *
- * @param router
- * @returns form, onFormSubmit, data, isError
  * routerを元にデータCRUD行う
  */
 export default function useExpenseMutation({
@@ -17,14 +12,6 @@ export default function useExpenseMutation({
   router: NextRouter;
   budgetID: string | undefined;
 }) {
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      emoji: "",
-      amount: "",
-    },
-  });
-
   const apiUtils = api.useContext();
 
   const expensesMutation = api.expense.newExpense.useMutation({
@@ -97,30 +84,7 @@ export default function useExpenseMutation({
       },
     });
 
-  const onFormSubmit = async (data: {
-    name: string;
-    emoji: string;
-    amount: string;
-  }) => {
-    if (!data.amount) {
-      return;
-    }
-    try {
-      await expensesMutation.mutateAsync({
-        sessionID: router.query.budget as string,
-        amount: parseInt(data.amount),
-        name: data.name,
-        emoji: data.emoji,
-      });
-      form.reset();
-    } catch (e) {
-      new Error("予算の設定に失敗しました");
-    }
-  };
-
   return {
-    form,
-    onFormSubmit,
     expensesMutation,
     deleteExpense,
     ...deleteOps,
