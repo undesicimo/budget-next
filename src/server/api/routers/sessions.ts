@@ -1,7 +1,11 @@
 import { z } from "zod";
-import { createId as createCUID } from "@paralleldrive/cuid2";
+import { init } from "@paralleldrive/cuid2";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { TRPCClientError } from "@trpc/client";
+
+const createCUID = init({
+  length: 5,
+});
 
 export const sessions = createTRPCRouter({
   newSession: publicProcedure.mutation(async ({ ctx }) => {
