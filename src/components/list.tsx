@@ -22,6 +22,9 @@ export default function ExpenseList({
   });
 
   const onDeleteClick = (selectedItemID: number, amount: number) => {
+    if (!window.confirm("削除してもよろしいですか？")) {
+      return;
+    }
     deleteExpense({
       amount,
       expenseID: selectedItemID,
@@ -35,7 +38,7 @@ export default function ExpenseList({
         <>
           <Dialog>
             <div
-              className="dark:bg-beigedark mb-4 flex h-16 w-[21rem] flex-row justify-between rounded-[2.5rem] bg-zinc-200 px-2"
+              className="mb-4 flex h-16 w-[21rem] flex-row justify-between rounded-[2.5rem] bg-zinc-200 px-2 dark:bg-beigedark"
               key={item.id}
             >
               <DialogTrigger asChild>

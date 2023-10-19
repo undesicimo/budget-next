@@ -33,7 +33,9 @@ export default function ExpenseForm() {
   const { form, onFormSubmit } = useExpenseForm({ expensesMutation, router });
 
   const onResetClick = () => {
-    window.alert("リセットされますが、よろしいですか？");
+    if (!window.confirm("リセットされますが、よろしいですか？")) {
+      return;
+    }
     resetBudgetBySession(router.query.budget as string);
     router.back();
   };
