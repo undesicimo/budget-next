@@ -40,6 +40,7 @@ export default function ExpenseForm() {
   });
 
   const onResetClick = () => {
+    window.alert("リセットされますが、よろしいですか？");
     resetBudgetBySession(router.query.budget as string);
     router.back();
   };
