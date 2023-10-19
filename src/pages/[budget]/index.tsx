@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { api } from "@/utils/api";
+import { RotateCcw } from "lucide-react";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -44,6 +45,13 @@ export default function Budget() {
     }
   };
 
+  const onNewSessionClick = async () => {
+    if (!window.confirm("すべての記録は削除されますがよろしいですか？")) {
+      return;
+    }
+    await router.push("/");
+  };
+
   if (isError) {
     return <ErrorPage router={router} />;
   }
@@ -67,7 +75,7 @@ export default function Budget() {
                   />
                 </FormItem>
               </div>
-              <div className="flex justify-center">
+              <div className="flex flex-row items-center justify-center gap-2">
                 <Button
                   id="submit-budget"
                   variant={"ghost"}
@@ -75,6 +83,17 @@ export default function Budget() {
                   type="submit"
                 >
                   決定
+                </Button>
+                <Button
+                  id="submit-budget"
+                  variant={"ghost"}
+                  className="mt-3 w-10 rounded-md border border-gray-600 px-0.5"
+                  type="submit"
+                  onClick={async () => {
+                    await onNewSessionClick();
+                  }}
+                >
+                  <RotateCcw />
                 </Button>
               </div>
             </div>
