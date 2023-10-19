@@ -3,6 +3,9 @@ import { api } from "@/utils/api";
 import { TRPCClientError } from "@trpc/client";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import manWithMoney from "../../public/images/man-with-money.png";
+import { ArrowBigRightDash } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
@@ -27,15 +30,19 @@ export default function Home() {
         <meta name="description" content="budget" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="mt-[142px] flex h-screen w-screen flex-col items-center justify-center">
-        <div>
-          <h1>Welcome</h1>
+      <main className="flex h-screen w-screen flex-col items-center justify-center gap-10">
+        <div className="sm:h-[456px] sm:w-[456px] lg:h-[391px] lg:w-[391px]">
+          <Image src={manWithMoney} alt="lpman" />
         </div>
-        <div>
-          <Button className="w-30" onClick={onMutateClick}>
-            Start a new session
-          </Button>
-        </div>
+
+        <Button
+          className="rounded-3xl"
+          variant={"outline"}
+          onClick={onMutateClick}
+        >
+          {"Let's save money!"}
+          <ArrowBigRightDash />
+        </Button>
       </main>
     </>
   );
