@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
  * @returns form, onFormSubmit, data, isError
  * routerを元にデータCRUD行う
  */
-export default function useExpenseForm({
+export default function useExpenseMutation({
   router,
   budgetID,
 }: {

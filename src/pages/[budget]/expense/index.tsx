@@ -10,34 +10,27 @@ import {
 } from "@/components/ui/popover";
 import EmojiPicker, { SuggestionMode } from "emoji-picker-react";
 import { useRouter } from "next/router";
-import useExpenseForm from "../../../hooks/useExpense";
+import useExpenseMutation from "../../../hooks/useExpenseMutation";
 import { FaceIcon } from "@radix-ui/react-icons";
-import { api } from "@/utils/api";
 import { useState } from "react";
 import ExpenseList from "@/components/list";
+import useBudgetMutation from "@/hooks/useBudgetMutation";
+import useExpenseForm from "@/hooks/useExpenseForm";
+import useBudgetQuery from "@/hooks/useBudgetQuery";
+import useExpenseQuery from "@/hooks/useExpenseQuery";
 
 export default function ExpenseForm() {
   const router = useRouter();
   const [isPopoverOpen, setPopoverOpen] = useState(false);
 
-  const { data: budget, isError: isSessionNotFound } =
-    api.budget.getBudgetBySession.useQuery(router.query.budget as string, {
-      refetchOnWindowFocus: false,
-      enabled: !!router.query.budget,
-    });
-
-  const { resetBudgetBySession } = useResetBudget();
-
-  const { data: expenses } = api.expense.getAllExpenseByBudgetID.useQuery(
-    { budgetID: budget?.id },
-    {
-      refetchOnWindowFocus: false,
-    },
-  );
-  const { form, onFormSubmit } = useExpenseForm({
+  const { budget, isSessionNotFound } = useBudgetQuery({ router });
+  const { resetBudgetBySession } = useBudgetMutation();
+  const { expenses } = useExpenseQuery({ budgetID: budget?.id });
+  const { expensesMutation } = useExpenseMutation({
     router,
     budgetID: budget?.id,
   });
+  const { form, onFormSubmit } = useExpenseForm({ expensesMutation, router });
 
   const onResetClick = () => {
     window.alert("リセットされますが、よろしいですか？");
@@ -161,12 +154,4 @@ export default function ExpenseForm() {
       <ExpenseList expenses={expenses} budget={budget!} />
     </main>
   );
-}
-function useResetBudget() {
-  const { mutate: resetBudgetBySession, ...budgetMutations } =
-    api.budget.resetBudget.useMutation();
-  return {
-    ...budgetMutations,
-    resetBudgetBySession,
-  };
 }
