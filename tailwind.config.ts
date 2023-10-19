@@ -19,6 +19,8 @@ module.exports = {
       colors: {
         beige: "#8E8E93",
         alt: "#E5E5EA",
+        beigedark: "#3A3A3C",
+        beigelightdark: "#48484A",
       },
       keyframes: {
         "accordion-down": {

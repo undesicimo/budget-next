@@ -5,7 +5,7 @@ import useFormatDate from "@/hooks/useFormatDate";
 export default function DialogMain({ expense }: { expense: Expense }) {
   const { formatDate } = useFormatDate();
   return (
-    <DialogContent className="bg-alt h-[12.1] w-[17.2rem] border-[0.625rem]">
+    <DialogContent className="bg-alt dark:bg-beigedark  h-[12.1] w-[17.2rem] border-[0.625rem]">
       <section className="flex flex-col place-items-center gap-[1.8rem] text-center">
         <div>
           <div className="w-36">

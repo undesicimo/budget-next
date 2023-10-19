@@ -35,16 +35,16 @@ export default function ExpenseList({
         <>
           <Dialog>
             <div
-              className="mb-4 flex h-16 w-[21rem] flex-row justify-between rounded-[2.5rem] bg-zinc-200 px-2"
+              className="dark:bg-beigedark mb-4 flex h-16 w-[21rem] flex-row justify-between rounded-[2.5rem] bg-zinc-200 px-2"
               key={item.id}
             >
               <DialogTrigger asChild>
                 <button className="flex flex-row gap-5">
-                  <div className="h-[3.125rem] w-[3.125rem] flex-shrink-0 self-center rounded-full border-[1.5px] border-slate-300 bg-white">
+                  <div className="h-[3.125rem] w-[3.125rem] flex-shrink-0 self-center rounded-full border-[1.5px] border-slate-300 bg-white dark:bg-gray-100">
                     <div className="text-[1.875rem]">{item.emoji}</div>
                   </div>
                   <div className="w-16 self-center">
-                    <p className="truncate text-black" title={item.name}>
+                    <p className="truncate" title={item.name}>
                       {item.name}
                     </p>
                     <p className="text-[0.61rem]">
