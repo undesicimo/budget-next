@@ -13,7 +13,7 @@ export default function ExpenseList({
   budget: Budget;
 }) {
   const router = useRouter();
-  const createdData = useCallback((date: Date) => {
+  const formatDate = useCallback((date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
@@ -50,7 +50,7 @@ export default function ExpenseList({
                 {item.name}
               </p>
               <p className="text-[0.61rem] text-black">
-                {createdData(item.createdAt)}
+                {formatDate(item.createdAt)}
               </p>
             </div>
             <div className="self-center">
