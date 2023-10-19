@@ -43,6 +43,41 @@ export const expense = createTRPCRouter({
       return newExpense;
     }),
 
+  deleteExpense: publicProcedure
+    .input(
+      z.object({
+        expenseID: z.number(),
+        amount: z.number(),
+        relatedBudget: z.object({
+          sessionId: z.string(),
+          id: z.string(),
+          amount: z.number(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      try {
+        await ctx.db.expense
+          .delete({
+            where: {
+              id: input.expenseID,
+            },
+          })
+          .then(async () => {
+            await ctx.db.budget.update({
+              where: {
+                id: input.relatedBudget.id,
+              },
+              data: {
+                amount: input.relatedBudget.amount + input.amount,
+              },
+            });
+          });
+      } catch (_err) {
+        throw new TRPCClientError("Expense not found");
+      }
+    }),
+
   getAllExpenseByBudgetID: publicProcedure
     .input(z.object({ budgetID: z.string().optional() }))
     .query(async ({ ctx, input }) => {

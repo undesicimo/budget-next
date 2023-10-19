@@ -1,13 +1,18 @@
 import { Trash2Icon } from "lucide-react";
 import { useCallback } from "react";
 import DialogMain from "./dialog";
-import { Expense } from "@prisma/client";
+import { Budget, Expense } from "@prisma/client";
+import useExpenseForm from "@/hooks/useExpense";
+import { useRouter } from "next/router";
 
 export default function ExpenseList({
   expenses,
+  budget,
 }: {
   expenses: Expense[] | undefined;
+  budget: Budget;
 }) {
+  const router = useRouter();
   const createdData = useCallback((date: Date) => {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
@@ -15,6 +20,16 @@ export default function ExpenseList({
 
     return `${year}-${month}-${day}`;
   }, []);
+
+  const { deleteExpense } = useExpenseForm({ router, budgetID: budget?.id });
+
+  const onDeleteClick = (selectedItemID: number, amount: number) => {
+    deleteExpense({
+      amount,
+      expenseID: selectedItemID,
+      relatedBudget: budget,
+    });
+  };
 
   return (
     <div className="my-8 h-[300px] overflow-auto">
@@ -40,7 +55,7 @@ export default function ExpenseList({
             </div>
           </button>
           <div className="h-[24px] w-[24px] self-center">
-            <button>
+            <button onClick={() => onDeleteClick(item.id, item.amount)}>
               <Trash2Icon />
             </button>
           </div>

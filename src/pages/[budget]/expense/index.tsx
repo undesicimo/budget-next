@@ -158,7 +158,7 @@ export default function ExpenseForm() {
           </form>
         </Form>
       </section>
-      <ExpenseList expenses={expenses} />
+      <ExpenseList expenses={expenses} budget={budget!} />
     </main>
   );
 }

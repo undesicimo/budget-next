@@ -67,6 +67,36 @@ export default function useExpenseForm({
     },
   });
 
+  const { mutate: deleteExpense, ...deleteOps } =
+    api.expense.deleteExpense.useMutation({
+      onMutate: async (data) => {
+        await apiUtils.expense.getAllExpenseByBudgetID.cancel();
+        if (data.relatedBudget.id === undefined)
+          throw new TRPCClientError("budgetID is undefined");
+
+        const previousExpenses =
+          apiUtils.expense.getAllExpenseByBudgetID.getData({ budgetID });
+
+        apiUtils.expense.getAllExpenseByBudgetID.setData(
+          { budgetID },
+          previousExpenses?.filter((item) => item.id !== data.expenseID),
+        );
+        return { previousExpenses };
+      },
+      onError: (_err, _newData, context) => {
+        apiUtils.expense.getAllExpenseByBudgetID.setData({ budgetID }, [
+          ...(context?.previousExpenses ?? []),
+        ]);
+      },
+      onSettled: async () => {
+        //どちも最新のデータを取得する
+        await apiUtils.expense.getAllExpenseByBudgetID.invalidate({ budgetID });
+        await apiUtils.budget.getBudgetBySession.invalidate(
+          router.query.budget as string,
+        );
+      },
+    });
+
   const onFormSubmit = async (data: {
     name: string;
     emoji: string;
@@ -92,5 +122,7 @@ export default function useExpenseForm({
     form,
     onFormSubmit,
     expensesMutation,
+    deleteExpense,
+    ...deleteOps,
   };
 }
