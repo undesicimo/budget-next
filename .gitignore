@@ -44,3 +44,4 @@ scripts/home_env.sh
 .gitignore
 scripts/local_env.sh
 .env-e
+/scripts
