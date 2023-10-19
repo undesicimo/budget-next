@@ -1,28 +1,61 @@
-# Create T3 App
+# Budget-Next
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+[https://budget-gold.vercel.app/](https://budget-next-five.vercel.app/)
 
-## What's next? How do I make an app with this?
+A budget management application built with Next.js, bootstrapped with `create-t3-app`.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+![Budget-Next Screenshot](public/images/man-with-money.png)
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+最近お金使いすぎて同居人との出費管理用に作りました.
 
-## Learn More
+Maybe this app is the only way to make us not spend too much
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Co-Author
+Everything Designed by 
+<br/>
+<br/>
+<img src="https://avatars.githubusercontent.com/u/111421231?v=4" alt="drawing" width="200"/>
+<br/>
+[@mylifeaskyara](https://github.com/mylifeaskyara)
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+## Features
 
-## How do I deploy this?
+- **Expense Management**: Add, edit, and delete expenses.
+- **Budget Overview**: View a summary of your budget and expenses.
+- **Responsive Design**: Optimized for both desktop and mobile views.
+- **Database Integration**: Uses Prisma for database management.
+- **Bootstrapped with create-t3-app**: This project was initialized using the `create-t3-app` template, providing a robust starting point for Next.js applications.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## Getting Started
+
+### Prerequisites
+
+- Node.js
+- A database compatible with Prisma (e.g., PostgreSQL, MySQL)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/undesicimo/budget-next.git
+   ```
+
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Copy the `.env.example` file to `.env` and fill in your database credentials.
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+Visit `http://localhost:3000` in your browser to see the application in action!
+
+## License
+
+[MIT](LICENSE)
