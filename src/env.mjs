@@ -12,7 +12,7 @@ export const env = createEnv({
     POSTGRES_PRISMA_URL: z.string(),
     POSTGRES_URL_NON_POOLING: z.string(),
     POSTGRES_USER: z.string(),
-    POSTGRES_HOST: z.string(),
+    POSTGRES_HOST: z.string().optional(),
     POSTGRES_PASSWORD: z.string(),
     POSTGRES_DATABASE: z.string(),
   },
