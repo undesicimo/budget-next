@@ -85,7 +85,7 @@ export default function Budget() {
                   決定
                 </Button>
                 <Button
-                  id="submit-budget"
+                  id="reset-session"
                   variant={"ghost"}
                   className="mt-3 w-10 rounded-md border border-gray-600 px-0.5"
                   type="submit"
