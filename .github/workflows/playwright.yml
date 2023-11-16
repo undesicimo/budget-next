@@ -5,34 +5,25 @@ on:
   pull_request:
     branches: production
 
-env:
-  POSTGRES_URL: postgresql://localhost:9000
-  POSTGRES_USER: postgres
-  POSTGRES_PRISMA_URL: postgresql://postgres:password@localhost:9000/db
-  POSTGRES_URL_NON_POOLING: postgresql://postgres:password@localhost:9000/db?connection_limit=1
-  POSTGRES_PASSWORD: password
-  POSTGRES_DATABASE: db
-
 jobs:
   docker_compose:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     container: node:18
     services:
       postgres:
-        image: postgres:13
+        image: postgres
         env:
+          POSTGRES_URL: postgresql://localhost:9000
           POSTGRES_USER: postgres
+          POSTGRES_PRISMA_URL: postgresql://postgres:password@localhost:9000/db
+          POSTGRES_URL_NON_POOLING: postgresql://postgres:password@localhost:9000/db?connection_limit=1
           POSTGRES_PASSWORD: password
-          POSTGRES_DB: db
-        ports:
-          - 9000:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-
-  e2e_test:
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
+          POSTGRES_DATABASE: db
+          ports: 9000:5432
+          options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: 18
