@@ -12,7 +12,7 @@ test.describe("/{budgetID}", () => {
       // Arrange
       await page.waitForSelector("h1");
 
-      const header = page.getByText("予算設定してね");
+      const header = page.getByRole("heading", { name: "予算設定してね" });
       // Assert
       await expect(header).toBeVisible();
     });
