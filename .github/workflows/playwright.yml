@@ -27,6 +27,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: create env
+        run: |
+          touch .env
+          echo "POSTGRES_URL=${{ env.POSTGRES_URL }}" >> .env
+          echo "POSTGRES_USER=${{ env.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ env.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DATABASE=${{ env.POSTGRES_DATABASE }}" >> .env
+          echo "POSTGRES_PRISMA_URL=${{ env.POSTGRES_PRISMA_URL }}" >> .env
+          echo "POSTGRES_URL_NON_POOLING=${{ env.POSTGRES_URL_NON_POOLING }}" >> .env
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
