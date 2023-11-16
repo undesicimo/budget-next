@@ -5,6 +5,14 @@ on:
   pull_request:
     branches: production
 
+env:
+  POSTGRES_URL: postgresql://localhost:9000
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: password
+  POSTGRES_DATABASE: db
+  POSTGRES_PRISMA_URL: postgresql://postgres:password@localhost:9000/db
+  POSTGRES_URL_NON_POOLING: postgresql://postgres:password@localhost:9000/db?connection_limit=1
+
 jobs:
   docker_compose:
     runs-on: ubuntu-latest
