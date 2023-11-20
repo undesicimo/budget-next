@@ -43,6 +43,7 @@ test.describe("/expense", () => {
 
     // Able to set ¥0
     await page.getByPlaceholder("どういうの").waitFor({ state: "visible" });
+    await page.getByPlaceholder("金額").waitFor({ state: "visible" });
     await expensePage.setNewExpense(
       INPUT_EXPENSE_NAME + "2",
       INPUT_EXPENSE_AMOUNT,
