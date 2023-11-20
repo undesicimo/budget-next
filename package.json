@@ -17,7 +17,11 @@
     "prisma:reset": "prisma migrate reset",
     "prisma:format": "prisma format",
     "home-env": "./scripts/home_env.sh",
-    "local-db": "./scripts/local_env.sh"
+    "local-db": "./scripts/local_env.sh",
+    "test:e2e": "playwright test --project=chromium",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --project=chromium --debug",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
@@ -51,6 +55,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.39.0",
     "@types/eslint": "^8.44.2",
     "@types/node": "^18.16.0",
     "@types/react": "^18.2.20",
