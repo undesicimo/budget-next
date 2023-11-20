@@ -42,7 +42,7 @@ test.describe("/expense", () => {
     await expect(page.getByText(CURRENT_DATE)).toBeVisible();
 
     // Able to set ¥0
-    await page.waitForEvent("response");
+    await page.getByPlaceholder("どういうの").waitFor({ state: "visible" });
     await expensePage.setNewExpense(
       INPUT_EXPENSE_NAME + "2",
       INPUT_EXPENSE_AMOUNT,
