@@ -40,6 +40,7 @@ export default function ExpenseList({
             <div
               className="mb-4 flex h-16 w-[21rem] flex-row justify-between rounded-[2.5rem] bg-zinc-200 px-2 dark:bg-beigedark"
               key={item.id}
+              data-testid="expense-item"
             >
               <DialogTrigger asChild>
                 <button className="flex flex-row gap-5">
@@ -60,7 +61,10 @@ export default function ExpenseList({
                 </button>
               </DialogTrigger>
               <div className=" w-12 place-self-center">
-                <button onClick={() => onDeleteClick(item.id, item.amount)}>
+                <button
+                  data-testid="delete-expense"
+                  onClick={() => onDeleteClick(item.id, item.amount)}
+                >
                   <Trash2Icon className="text-beige" />
                 </button>
               </div>
